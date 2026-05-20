@@ -38,14 +38,21 @@ function App() {
 
   return (
     <>
-      <PondScene />
-      <PlayBtn
-        isPlaying={isPlaying}
-        handlePlay={handlePlay} />
-      <Timer
-        time={time} />
-      <ResetBtn onReset={handleReset}
-      />
+      <div className="relative">
+        <PondScene />
+        <div className="absolute inset-0 content-end pb-10">
+          
+          <Timer
+            time={time} />
+          <div className="flex items-center justify-center gap-5">
+            <PlayBtn
+              isPlaying={isPlaying}
+              handlePlay={handlePlay} />
+            <ResetBtn onReset={handleReset}/>
+          </div>
+        </div>
+      </div>
+
     </>
   )
 }

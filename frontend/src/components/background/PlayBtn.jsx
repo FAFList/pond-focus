@@ -5,7 +5,7 @@ export default function PlayBtn({isPlaying, handlePlay}){
 
   return (
     <>
-      <div className="play-btn">
+      <div className="w-30">
         <button onClick={handlePlay}>{isPlaying ? <img src={pauseIcon} alt="Pause" /> : <img src={playIcon} alt="Play" />}</button>
       </div>
     </>
