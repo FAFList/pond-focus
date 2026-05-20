@@ -1,0 +1,37 @@
+import musicIcon from '../assets/ui/buttons/Music-removebg-preview.png';
+import { useRef, useState } from 'react';
+
+export default function MusicBtn() {
+  const audioRef = useRef(null);
+  const [music, setMusic] = useState(false);
+  const playMusic = async () => {
+    if(!music){
+    try {
+      await audioRef.current.play();
+      setMusic(true)
+    } catch (err) {
+      console.error(err);
+    }}else{
+    try {
+      await audioRef.current.pause();
+      setMusic(false)
+    } catch (err) {
+      console.error(err);
+    }
+    }
+  };
+
+  return (
+    <>
+      <audio ref={audioRef} loop>
+        <source src="/music/test.mp3" type="audio/mpeg" />
+      </audio>
+      <button
+        type="button"
+        onClick={playMusic}
+        className='w-30'>
+        <img src={musicIcon} alt="music" />
+      </button>
+    </>
+  );
+}
