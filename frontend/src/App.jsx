@@ -101,7 +101,7 @@ function App() {
   return (
     <>
       <div className="relative">
-        <PondScene />
+        <PondScene mode = {mode} />
         <div className="absolute top-0 m-10 z-100 ">
           <MusicBtn />
         </div>
