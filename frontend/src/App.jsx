@@ -6,7 +6,7 @@ import ResetBtn from './components/ResetBtn';
 import Timer from './components/Timer';
 import MusicBtn from './components/MusicBtn';
 import TimeUp from './components/TimeUp';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Sessions from './components/Sessions';
 
 function App() {
@@ -16,28 +16,42 @@ function App() {
   const [mode, setMode] = useState("idle");
   const [lastSession, setLastSession] = useState(null);
 
-  const [workingSession, setWorkingSession] = useState(80);
+  const [workingSession, setWorkingSession] = useState(0);
+  const sessionStartRef = useRef(null);
+  const hasEndedRef = useRef(false);
   const display = {
-    hours : Math.floor(workingSession/3600),
-    minutes: Math.floor((workingSession % 3600)/60) 
+    hours: Math.floor(workingSession / 3600),
+    minutes: Math.floor((workingSession % 3600) / 60)
   }
 
-  const handleSessionEnd = () => {
-    if (mode === "work") {
-      setLastSession("work");
-      setWorkingSession(prev => prev + timer)
-    } else if (mode === "break") {
-      setLastSession("break");
-      setWorkingSession(prev => prev + breakTimer)
-    }
-      setMode("idle");
+  const handleSessionEnd = useCallback(() => {
+    if (hasEndedRef.current) return;
+    hasEndedRef.current = true;
 
-  }
+    const elapsedSeconds = Math.floor(
+      (Date.now() - sessionStartRef.current) / 1000
+    );
+
+    setWorkingSession(prev => prev + elapsedSeconds);
+
+    setMode(prevMode => {
+      if (prevMode === "idle") return prevMode;
+
+      if (prevMode === "work") {
+        setLastSession("work");
+      } else if (prevMode === "break") {
+        setLastSession("break");
+      }
+
+      return "idle";
+    });
+  }, []);
   const handlePlay = () => {
     if (mode === "paused") {
       setMode("work");
       return;
     }
+    sessionStartRef.current = Date.now();
 
     setMode("work");
     setTime(timer);
@@ -50,18 +64,24 @@ function App() {
     setMode("idle")
   }
   const handleBreak = () => {
+    sessionStartRef.current = Date.now();
+
     setMode("break")
     setTime(breakTimer);
   }
 
+  // Reset the session end flag when mode changes
+  useEffect(() => {
+    hasEndedRef.current = false;
+  }, [mode])
+
+  // Countdown timer effect
   useEffect(() => {
     if (mode === "idle" || mode === "paused") return;
 
     const interval = setInterval(() => {
       setTime(prev => {
-        if (prev <= 0) {
-          clearInterval(interval);
-          handleSessionEnd();
+        if (prev <= 1) {
           return 0;
         }
         return prev - 1;
@@ -71,6 +91,13 @@ function App() {
     return () => clearInterval(interval);
 
   }, [mode])
+
+  // Handle session end when time reaches 0
+  useEffect(() => {
+    if (time === 0 && mode !== "idle" && mode !== "paused") {
+      handleSessionEnd();
+    }
+  }, [time, mode, handleSessionEnd])
   return (
     <>
       <div className="relative">
