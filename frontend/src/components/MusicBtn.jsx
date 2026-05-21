@@ -1,4 +1,5 @@
 import musicIcon from '../assets/ui/buttons/Music-removebg-preview.png';
+import muteIcon from '../assets/ui/buttons/MusicMute-removebg-preview.png'
 import { useRef, useState } from 'react';
 
 export default function MusicBtn() {
@@ -30,7 +31,7 @@ export default function MusicBtn() {
         type="button"
         onClick={playMusic}
         className='w-30'>
-        <img src={musicIcon} alt="music" />
+        {music ? <img src={musicIcon} alt="music" />:<img src={muteIcon} alt="music" />}
       </button>
     </>
   );

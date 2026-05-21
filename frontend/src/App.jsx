@@ -10,7 +10,6 @@ import { useState, useEffect } from 'react';
 function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [time, setTime] = useState(1500)
-
   const handlePlay = () => {
     setIsPlaying(prev => !prev);
   }
