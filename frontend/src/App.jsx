@@ -45,17 +45,21 @@ function App() {
       (Date.now() - sessionStartRef.current) / 1000
     );
 
-    setAppData(prev => ({
-      ...prev,
-      workingSession: (prev.workingSession ?? 0) + elapsedSeconds
-    }));
     setMode(prevMode => {
       if (prevMode === "idle") return prevMode;
 
       if (prevMode === "work") {
         setLastSession("work");
+        setAppData(prev => ({
+          ...prev,
+          workingSession: (prev.workingSession ?? 0) + elapsedSeconds
+        }));
       } else if (prevMode === "break") {
         setLastSession("break");
+        setAppData(prev => ({
+          ...prev,
+          workingSession: (prev.workingSession ?? 0) + elapsedSeconds
+        }));
       }
 
       return "idle";
