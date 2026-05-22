@@ -1,7 +1,4 @@
 import board2 from "../assets/ui/board.png"
-// import dot from "../assets/ui/:.png"
-import h from "../assets/ui/h.png"
-import m from "../assets/ui/m.png"
 import { numbers, preloadNumbers } from "../utils/preloadNumbers";
 import { useEffect } from "react";
 import { splitNumber } from "../utils/splitNumber";
@@ -21,17 +18,24 @@ export default function Sessions({ display }) {
           <div className="flex">
             <img src={numbers[hdeci]} className="w-[32px] h-[32px] object-contain block" />
             <img src={numbers[huni]} className="w-[32px] h-[32px] object-contain block" />
-            <img src={h} alt="" className="w-[20px] object-contain" />
+            <div className=" font-frog text-amber-200 text-3xl drop-shadow-lg pr-2"
+              style={{
+                textShadow: "2px 1px rgb(78, 54, 41)"
+              }}>h</div>
+            {/* <img src={h} alt="" className="w-[20px] object-contain" /> */}
           </div>
 
           {display.minutes !== 0 && (
             <>
-            
+
 
               <div className="flex">
                 <img src={numbers[mdeci]} className="w-[32px] h-[32px] object-contain block" />
                 <img src={numbers[muni]} className="w-[32px] h-[32px] object-contain block" />
-                <img src={m} alt="" className="w-[20px] object-contain" />
+                  <div className=" font-frog text-amber-200 text-3xl drop-shadow-lg"
+              style={{
+                textShadow: "2px 1px rgb(78, 54, 41)"
+              }}>m</div>
               </div>
             </>
           )}
