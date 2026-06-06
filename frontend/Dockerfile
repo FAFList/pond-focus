@@ -13,7 +13,7 @@ RUN npm install
 COPY . .
 
 # Build Vite app
-RUN npm run build
+RUN npm run build -- --base='/'
 
 
 # Stage 2: serve with nginx
